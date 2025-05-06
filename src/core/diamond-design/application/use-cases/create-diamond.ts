@@ -1,33 +1,37 @@
 import { Either, Errors, left, right } from '@/core/shared/errors'
 import { Diamond } from '../../enterprise/entities/diamond'
 import { UseCase } from '@/core/shared/use-cases'
-import { IDiamond } from '../contracts/diamond.interface'
-import { DiamondDescription } from '../../enterprise/value-objects/diamond-desciption'
+import { IDiamondRepository } from '../contracts/diamond-repository.interface'
 
 type CreateDiamondInput = {
     name: string
-    goal: string
+    context: string
+    businessProblem: string
+    userProblem: string
+    goals: string[]
 }
 
 type CreateDiamondOutput = Either<Errors, { diamond: Diamond }>
 
 export class CreateDiamond extends UseCase {
-    constructor(private repository: IDiamond) {
-        super('Description')
+    constructor(private repository: IDiamondRepository) {
+        super('Create a new project')
     }
 
     async execute({
         name,
-        goal,
+        context,
+        businessProblem,
+        userProblem,
+        goals,
     }: CreateDiamondInput): Promise<CreateDiamondOutput> {
         try {
-            const description = new DiamondDescription({
-                goal,
-            })
-
             const diamond = Diamond.create({
                 name,
-                description,
+                context,
+                businessProblem,
+                userProblem,
+                goals,
             })
 
             await this.repository.create(diamond)

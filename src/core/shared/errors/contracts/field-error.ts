@@ -1,4 +1,4 @@
-enum FieldErrorCode {
+export enum FieldErrorCode {
     REQUIRED = 'REQUIRED',
     INVALID_FORMAT = 'INVALID_FORMAT',
     TOO_SHORT = 'TOO_SHORT',
